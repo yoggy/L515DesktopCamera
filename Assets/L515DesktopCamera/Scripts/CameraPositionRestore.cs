@@ -6,6 +6,9 @@ public class CameraPositionRestore : MonoBehaviour
 {
     public Transform mainCamera;
 
+    Vector3 lastCameraPosition;
+    Vector3 lastCameraEulerAngles;
+
     void Start()
     {
         float x = PlayerPrefs.GetFloat("camera_x", mainCamera.position.x);
@@ -26,17 +29,20 @@ public class CameraPositionRestore : MonoBehaviour
         {
             ResetPosition();
         }
+
+        lastCameraPosition = mainCamera.position;
+        lastCameraEulerAngles = mainCamera.eulerAngles;
     }
 
     void OnDestroy()
     {
-        PlayerPrefs.SetFloat("camera_x", mainCamera.position.x);
-        PlayerPrefs.SetFloat("camera_y", mainCamera.position.y);
-        PlayerPrefs.SetFloat("camera_z", mainCamera.position.z);
+        PlayerPrefs.SetFloat("camera_x", lastCameraPosition.x);
+        PlayerPrefs.SetFloat("camera_y", lastCameraPosition.y);
+        PlayerPrefs.SetFloat("camera_z", lastCameraPosition.z);
 
-        PlayerPrefs.SetFloat("camera_pitch", mainCamera.eulerAngles.x);
-        PlayerPrefs.SetFloat("camera_yaw", mainCamera.eulerAngles.y);
-        PlayerPrefs.SetFloat("camera_roll", mainCamera.eulerAngles.z);
+        PlayerPrefs.SetFloat("camera_pitch", lastCameraEulerAngles.x);
+        PlayerPrefs.SetFloat("camera_yaw", lastCameraEulerAngles.y);
+        PlayerPrefs.SetFloat("camera_roll", lastCameraEulerAngles.z);
     }
 
     public void ResetPosition()
